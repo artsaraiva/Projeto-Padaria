@@ -5,15 +5,30 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import { sync } from 'vuex-router-sync'
+import store from '@/store/store'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)
 
+sync(store, router)
+
+router.beforeEach((to, from, next) => {
+  const requireAuth = to.name !== 'login'
+
+  if (requireAuth && !store.state.isUserLoggedIn) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

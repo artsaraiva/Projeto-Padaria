@@ -2,7 +2,7 @@
   <v-layout column>
     <v-flex xs6 offset-xs3 class="card">
       <div class="white elevation-2">
-        <v-toolbar flat dense dark class="cyan">
+        <v-toolbar flat dense dark class="amber accent-4">
           <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
 
@@ -10,7 +10,7 @@
           <v-text-field label="Login" v-model="login" />
           <v-text-field label="Senha" type="password" v-model="password" />
           <div class="danger-alert" v-html="error" />
-          <v-btn dark class="cyan" @click="doLogin">
+          <v-btn dark class="amber accent-4" @click="doLogin">
             Login
           </v-btn>
         </div>
@@ -33,11 +33,13 @@ export default {
   methods: {
     async doLogin () {
       try {
-        await AuthenticationService.login({
-          name: this.name,
+        const response = await AuthenticationService.login({
           login: this.login,
           password: this.password
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
+        this.$router.push({ name: 'root' })
       } catch (error) {
         this.error = error.response.data.error
       }

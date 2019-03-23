@@ -2,7 +2,7 @@
   <v-layout column>
     <v-flex xs6 offset-xs3 class="card">
       <div class="white elevation-2">
-        <v-toolbar flat dense dark class="cyan">
+        <v-toolbar flat dense dark class="amber accent-4">
           <v-toolbar-title>Cadastro de Usuário</v-toolbar-title>
         </v-toolbar>
 
@@ -11,7 +11,7 @@
           <v-text-field label="Login" v-model="login" />
           <v-text-field label="Senha" type="password" v-model="password" />
           <div class="danger-alert" v-html="error" />
-          <v-btn dark class="cyan" @click="register">
+          <v-btn dark class="amber accent-4" @click="register">
             Cadastrar
           </v-btn>
         </div>
@@ -29,7 +29,8 @@ export default {
       name: '',
       login: '',
       password: '',
-      error: null
+      error: null,
+      users: []
     }
   },
   methods: {
