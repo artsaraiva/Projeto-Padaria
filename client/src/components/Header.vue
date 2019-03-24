@@ -1,7 +1,7 @@
 <template>
   <v-toolbar fixed dark class="amber accent-4">
     <v-toolbar-title>
-      <router-link class="home" tag="span" :to="{ name: 'root' }">
+      <router-link class="home" tag="span" :to="{ name: 'register' }">
         Padaria
       </router-link>
     </v-toolbar-title>
@@ -9,9 +9,9 @@
     <v-spacer />
 
     <v-toolbar-items>
-      <v-btn flat dark :to="{ name: 'register' }">
-        Cadastrar
-      </v-btn>
+      <!-- <v-btn flat dark :to="{ name: 'register' }">
+        Usuários
+      </v-btn> -->
       <v-btn v-if="!$store.state.isUserLoggedIn" flat dark :to="{ name: 'login' }">
         Entrar
       </v-btn>

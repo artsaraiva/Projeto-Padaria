@@ -1,13 +1,16 @@
 
-const AuthenticationController = require('./controllers/AuthenticationController')
+const UserController = require('./controllers/UserController')
 
-const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy')
+const UserControllerPolicy = require('./policies/UserControllerPolicy')
 
 module.exports = function (app) {
-  app.post('/register',
-    AuthenticationControllerPolicy.register,
-    AuthenticationController.register)
+  app.post('/login', UserController.login)
 
-  app.post('/login',
-    AuthenticationController.login)
+  app.get('/users', UserController.get)
+
+  app.post('/users', UserControllerPolicy.post, UserController.post)
+
+  app.put('/users/:id', UserControllerPolicy.put, UserController.put)
+
+  app.delete('/users/:id', UserController.delete)
 }

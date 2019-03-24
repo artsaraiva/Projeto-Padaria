@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import AuthenticationService from '@/services/AuthenticationService'
+import UserService from '@/services/UserService'
 
 export default {
   data () {
@@ -33,13 +33,13 @@ export default {
   methods: {
     async doLogin () {
       try {
-        const response = await AuthenticationService.login({
+        const response = await UserService.login({
           login: this.login,
           password: this.password
         })
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
-        this.$router.push({ name: 'root' })
+        this.$router.push(this.$route.query.redirect || '/')
       } catch (error) {
         this.error = error.response.data.error
       }
