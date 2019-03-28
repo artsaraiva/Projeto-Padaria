@@ -1,19 +1,19 @@
 <template>
   <v-layout column>
-    <v-flex xs6 offset-xs3 class="card">
+    <v-flex xs10 offset-xs1 class="card">
       <div class="white elevation-2">
         <v-toolbar flat dense dark class="amber accent-4">
           <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
 
-        <div class="pl-4 pr-4 pt-2 pb-2">
-          <v-text-field label="Login" v-model="login" />
-          <v-text-field label="Senha" type="password" v-model="password" />
+        <form @submit="doLogin" class="pl-4 pr-4 pt-2 pb-2">
+          <v-text-field prepend-icon="person" label="Login" v-model="login" />
+          <v-text-field prepend-icon="lock" label="Senha" type="password" v-model="password" />
           <div class="danger-alert" v-html="error" />
-          <v-btn dark class="amber accent-4" @click="doLogin">
+          <v-btn type="submit" dark class="amber accent-4">
             Login
           </v-btn>
-        </div>
+        </form>
       </div>
     </v-flex>
   </v-layout>
@@ -50,6 +50,6 @@ export default {
 
 <style scoped>
 .card {
-  max-width: 50% !important;
+  max-width: 83.33333333333334% !important;
 }
 </style>

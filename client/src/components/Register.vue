@@ -2,7 +2,7 @@
   <div>
     <!-- User editor -->
     <v-dialog v-model="dialog" max-width="500px">
-      <v-btn slot="activator" color="primary" dark relative left>Novo Usuário</v-btn>
+      <v-btn slot="activator" class="amber darken-3" dark>Novo Usuário</v-btn>
       <v-card >
         <v-card-title>
           <span class="headline">{{ formTitle }}</span>
@@ -15,8 +15,8 @@
         <v-alert type="error" :value="error" :key="error" v-html="error" />
         <v-card-actions>
           <v-spacer />
-          <v-btn color="blue darken-1" flat @click.native="close">Cancelar</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save">Salvar</v-btn>
+          <v-btn color="blue darken-1" flat @click="close">Cancelar</v-btn>
+          <v-btn class="blue darken-1" dark flat @click="save">Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -27,14 +27,14 @@
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.login }}</td>
-        <td>{{ props.item.createdAt }}</td>
-        <td>{{ props.item.updatedAt }}</td>
+        <td>{{ formatDate(props.item.createdAt) }}</td>
+        <td>{{ formatDate(props.item.updatedAt) }}</td>
         <td class="justify-center layout px-0">
         <v-btn icon class="mx-0" @click="editUser(props.item)">
-          <v-icon color="teal">edit</v-icon>
+          <v-icon color="blue">edit</v-icon>
         </v-btn>
         <v-btn icon class="mx-0" @click="deleteUser(props.item)">
-          <v-icon color="pink">delete</v-icon>
+          <v-icon color="red">delete</v-icon>
         </v-btn>
         </td>
       </template>
@@ -44,6 +44,7 @@
 
 <script>
 import UserService from '@/services/UserService'
+const moment = require('moment')
 
 export default {
   data () {
@@ -120,6 +121,9 @@ export default {
           console.log(error)
         }
       }
+    },
+    formatDate (date) {
+      return moment(date).format('DD/MM/YYYY HH:mm:ss')
     }
   }
 }

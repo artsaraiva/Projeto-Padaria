@@ -21,7 +21,10 @@ const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: {
+        redirectWhenLogged: true
+      }
     },
     {
       path: '*',
@@ -31,8 +34,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.state.isUserLoggedIn) {
+  if (!store.state.isUserLoggedIn) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
       next({
         path: '/login',
         query: {
@@ -42,6 +45,10 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
+  } else if (to.matched.some(record => record.meta.redirectWhenLogged)) {
+    next({
+      path: from.fullPath
+    })
   } else {
     next()
   }
