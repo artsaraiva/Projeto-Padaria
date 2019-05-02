@@ -20,19 +20,29 @@ function hashPassword (user, options) {
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(200),
       allowNull: false
     },
     login: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING(200),
+      allowNull: false
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false
     }
   }, {
+    indexes: [{
+      unique: true,
+      fields: ['login']
+    }, {
+      unique: true,
+      fields: ['email']
+    }],
     hooks: {
       beforeSave: hashPassword
     }

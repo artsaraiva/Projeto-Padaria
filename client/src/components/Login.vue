@@ -5,9 +5,8 @@
         <v-toolbar flat dense dark class="amber accent-4">
           <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
-
         <form @submit="doLogin" class="pl-4 pr-4 pt-2 pb-2">
-          <v-text-field prepend-icon="person" label="Login" v-model="login" />
+          <v-text-field prepend-icon="person" label="Email ou Login" v-model="login" />
           <v-text-field prepend-icon="lock" label="Senha" type="password" v-model="password" />
           <div class="danger-alert" v-html="error" />
           <v-btn type="submit" dark class="amber accent-4">

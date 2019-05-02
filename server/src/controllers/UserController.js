@@ -2,6 +2,7 @@
 const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
+const Op = require('../models').Sequelize.Op
 
 function jwtSignUser (user) {
   const ONE_WEEK = 60 * 60 * 24 * 7
@@ -16,7 +17,7 @@ module.exports = {
       const { login, password } = req.body
       const user = await User.findOne({
         where: {
-          login: login
+          [Op.or]: [{ login: login }, { email: login }]
         }
       })
 
@@ -76,11 +77,16 @@ module.exports = {
           id: req.params.id
         }
       })
-      await user.update(req.body)
 
+      if (!user) {
+        return res.status(404).send({
+          error: 'não existe registro com esse id'
+        })
+      }
+
+      await user.update(req.body)
       res.send(user.toJSON())
     } catch (error) {
-      console.log(error)
       res.status(500).send({
         error: 'não foi possivel atualizar usuário'
       })
@@ -94,11 +100,13 @@ module.exports = {
           id: req.params.id
         }
       })
+
       if (!user) {
-        return res.status(403).send({
+        return res.status(404).send({
           error: 'não existe registro com esse id'
         })
       }
+
       await user.destroy()
       res.send(user)
     } catch (error) {
@@ -118,8 +126,10 @@ module.exports = {
       if (users.find((item) => item.id !== user.id && item.login === user.login)) {
         msg = 'Esse login já está em uso'
       }
+      if (users.find((item) => item.id !== user.id && item.email === user.email)) {
+        msg = 'Esse email já está em uso'
+      }
     } catch (error) {
-      console.log(error)
       msg = 'erro ao tentar salvar usuário'
     }
 

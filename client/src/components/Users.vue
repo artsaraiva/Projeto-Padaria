@@ -10,6 +10,7 @@
         <v-card-text>
           <v-text-field label="Nome" v-model="editedUser.name" />
           <v-text-field label="Login" v-model="editedUser.login" />
+          <v-text-field label="Email" v-model="editedUser.email" />
           <v-text-field label="Senha" type="password" v-model="editedUser.password" />
         </v-card-text>
         <v-alert type="error" :value="error" :key="error" v-html="error" />
@@ -27,6 +28,7 @@
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.login }}</td>
+        <td>{{ props.item.email }}</td>
         <td>{{ formatDate(props.item.createdAt) }}</td>
         <td>{{ formatDate(props.item.updatedAt) }}</td>
         <td class="justify-center layout px-0">
@@ -55,6 +57,7 @@ export default {
         { text: 'ID', value: 'id' },
         { text: 'Nome', value: 'name' },
         { text: 'Login', value: 'login' },
+        { text: 'Email', value: 'email' },
         { text: 'Criado em', value: 'createdAt' },
         { text: 'Última atualização', value: 'updatedAt' },
         { text: 'Ações', value: 'actions', sortable: false }
@@ -64,11 +67,13 @@ export default {
       editedUser: {
         name: '',
         login: '',
+        email: '',
         password: ''
       },
       defaultUser: {
         name: '',
         login: '',
+        email: '',
         password: ''
       }
     }

@@ -3,27 +3,45 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
 
-import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Sales from '@/components/Sales'
+import Users from '@/components/Users'
+import Products from '@/components/Products'
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [
     {
-      path: '/',
-      name: 'register',
-      component: Register,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
       path: '/login',
       name: 'login',
       component: Login,
       meta: {
         redirectWhenLogged: true
+      }
+    },
+    {
+      path: '/',
+      name: 'sales',
+      component: Sales,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: Users,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/products',
+      name: 'products',
+      component: Products,
+      meta: {
+        requiresAuth: true
       }
     },
     {
