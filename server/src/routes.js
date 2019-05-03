@@ -12,7 +12,7 @@ module.exports = function (app) {
 
   app.get('/users', isAuthenticated, UserController.get)
 
-  app.post('/users', isAuthenticated, UserControllerPolicy.post, UserController.post)
+  app.post('/users', UserControllerPolicy.post, UserController.post)
 
   app.put('/users/:id', isAuthenticated, UserControllerPolicy.put, UserController.put)
 
