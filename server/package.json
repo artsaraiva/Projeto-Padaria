@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src\\app.js --exec \"eslint \"src/**/*.js\" && node\"",
+    "ubuntu": "nodemon src/app.js --exec  \"npm run lint && node\"",
+    "lint": "eslint src/**/*.js",
+    "seed": "node seed",
     "test": "mocha"
   },
   "keywords": [],

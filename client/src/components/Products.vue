@@ -10,12 +10,12 @@
         <v-card-text>
           <v-text-field label="Nome" v-model="editedProduct.name" />
           <v-text-field label="Código" v-model="editedProduct.code" />
-          <v-text-field label="Preço" v-bind:min="0" v-bind:minus="false" v-bind:precision="2" separator="." v-model="editedProduct.price" />
+          <currency-field v-bind="{ label: 'Preço', prefix: 'R$ ' }" v-model="editedProduct.price" />
           <v-text-field label="Tipo" v-model="editedProduct.type" />
-          <v-text-field label="Estoque" v-bind:min="0" v-bind:minus="false" v-bind:precision="0" v-model="editedProduct.quantity" />
+          <v-text-field label="Estoque" type="number" v-model="editedProduct.quantity" />
           <div class="notify">
             <v-checkbox label="Notificar falta de estoque" v-model="notifyStock" />
-            <v-text-field label="Quantidade" v-if="notifyStock" v-bind:min="0" v-bind:minus="false" v-bind:precision="0" v-model="editedProduct.minimum_quantity" />
+            <v-text-field label="Quantidade" v-if="notifyStock" type="number" min="0" v-model="editedProduct.minimum_quantity" />
           </div>
         </v-card-text>
         <v-alert type="error" :value="error" :key="error" v-html="error" />
@@ -33,7 +33,7 @@
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.code }}</td>
-        <td>{{ props.item.price }}</td>
+        <td>{{ formatPrice(props.item.price) }}</td>
         <td>{{ props.item.type }}</td>
         <td>{{ formatQuantity(props.item) }}</td>
         <td>{{ formatDate(props.item.createdAt) }}</td>
@@ -53,12 +53,12 @@
 
 <script>
 import ProductService from '@/services/ProductService'
-import VueNumeric from 'vue-numeric'
+import CurrencyField from '@/components/CurrencyField'
 const moment = require('moment')
 
 export default {
   components: {
-    VueNumeric
+    CurrencyField
   },
   data () {
     return {
@@ -165,6 +165,9 @@ export default {
       }
 
       return quantity
+    },
+    formatPrice (price) {
+      return 'R$ ' + price.toString().replace('.', ',')
     }
   }
 }

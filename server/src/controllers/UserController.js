@@ -40,6 +40,7 @@ module.exports = {
         token: jwtSignUser(userJson)
       })
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'erro ao tentar logar'
       })
@@ -64,6 +65,7 @@ module.exports = {
       const user = await User.create(req.body)
       res.send(user.toJSON())
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'não foi possivel adicionar usuário'
       })
@@ -130,6 +132,7 @@ module.exports = {
         msg = 'Esse email já está em uso'
       }
     } catch (error) {
+      console.log(error)
       msg = 'erro ao tentar salvar usuário'
     }
 

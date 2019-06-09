@@ -4,7 +4,7 @@ function checkStock (product, options) {
 }
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Product', {
+  const Product = sequelize.define('product', {
     name: {
       type: DataTypes.STRING(200),
       allowNull: false
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     price: {
-      type: DataTypes.DECIMAL(10, 2),
+      type: DataTypes.DOUBLE,
       allowNull: false
     },
     type: {
@@ -36,4 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       afterSave: checkStock
     }
   })
+
+  Product.associate = (models) => {
+    Product.belongsToMany(models.Order, { through: models.OrderProduct })
+  }
+
+  return Product
 }
