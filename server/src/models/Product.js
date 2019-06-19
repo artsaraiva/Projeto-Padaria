@@ -4,7 +4,7 @@ function checkStock (product, options) {
 }
 
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('product', {
+  const Product = sequelize.define('Product', {
     name: {
       type: DataTypes.STRING(200),
       allowNull: false
@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     }
   }, {
+    tableName: 'products',
     hooks: {
       afterSave: checkStock
     }

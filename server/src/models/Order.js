@@ -1,11 +1,13 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const Order = sequelize.define('order', {
+  const Order = sequelize.define('Order', {
     value: {
       type: DataTypes.DOUBLE,
       allowNull: false
     },
     notes: DataTypes.TEXT
+  }, {
+    tableName: 'orders'
   })
 
   Order.associate = (models) => {

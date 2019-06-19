@@ -1,5 +1,5 @@
 
-const Joi = require('joi')
+const Joi = require('@hapi/joi')
 
 async function doValidate (body) {
   const schema = {

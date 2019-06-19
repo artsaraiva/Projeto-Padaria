@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('order_product', {
+  return sequelize.define('OrderProduct', {
     amount: {
       type: DataTypes.DOUBLE,
       allowNull: false
@@ -9,5 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DOUBLE,
       allowNull: false
     }
+  }, {
+    tableName: 'order_products'
   })
 }

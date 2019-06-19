@@ -1,15 +1,30 @@
 
 module.exports = {
-  port: process.env.PORT || 8081,
-  db: {
-    database: process.env.DB_NAME || 'bakery',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASS || 'root',
-    options: {
-      dialect: process.env.DIALECT || 'mysql',
-      host: process.env.HOST || 'localhost'
-    }
+  development: {
+    username: 'root',
+    password: 'root',
+    database: 'bakery',
+    host: '127.0.0.1',
+    dialect: 'mysql',
+    seederStorage: 'sequelize'
   },
+  test: {
+    username: process.env.DB_USERNAME || 'root',
+    password: process.env.DB_PASSWORD || 'root',
+    database: process.env.DB_NAME || 'bakery',
+    host: process.env.DB_HOSTNAME || '127.0.0.1',
+    dialect: 'mysql',
+    seederStorage: 'sequelize'
+  },
+  production: {
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOSTNAME,
+    dialect: 'mysql',
+    seederStorage: 'sequelize'
+  },
+  port: process.env.PORT || 8081,
   authentication: {
     jwtSecret: process.env.JWT_SECRET || 'secret'
   },

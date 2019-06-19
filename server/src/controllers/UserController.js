@@ -1,57 +1,14 @@
 
 const { User } = require('../models')
-const jwt = require('jsonwebtoken')
-const config = require('../config')
 const Op = require('../models').Sequelize.Op
 
-function jwtSignUser (user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
-  return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
-  })
-}
-
 module.exports = {
-  async login (req, res) {
-    try {
-      const { login, password } = req.body
-      const user = await User.findOne({
-        where: {
-          [Op.or]: [{ login: login }, { email: login }]
-        }
-      })
-
-      if (!user) {
-        return res.status(403).send({
-          error: 'Login ou senha incorretos'
-        })
-      }
-
-      const isPasswordValid = await user.comparePassword(password)
-      if (!isPasswordValid) {
-        return res.status(403).send({
-          error: 'Login ou senha incorretos'
-        })
-      }
-
-      const userJson = user.toJSON()
-      res.send({
-        user: userJson,
-        token: jwtSignUser(userJson)
-      })
-    } catch (error) {
-      console.log(error)
-      res.status(500).send({
-        error: 'erro ao tentar logar'
-      })
-    }
-  },
-
   async get (req, res) {
     try {
       const users = await User.findAll({
         where: {}
       })
+
       res.send(users)
     } catch (error) {
       res.status(500).send({
@@ -63,9 +20,9 @@ module.exports = {
   async post (req, res) {
     try {
       const user = await User.create(req.body)
-      res.send(user.toJSON())
+
+      res.send(user)
     } catch (error) {
-      console.log(error)
       res.status(500).send({
         error: 'não foi possivel adicionar usuário'
       })
@@ -87,7 +44,7 @@ module.exports = {
       }
 
       await user.update(req.body)
-      res.send(user.toJSON())
+      res.send(user)
     } catch (error) {
       res.status(500).send({
         error: 'não foi possivel atualizar usuário'
@@ -122,17 +79,25 @@ module.exports = {
     let msg = null
 
     try {
-      const users = await User.findAll({
-        where: {}
+      const other = await User.findOne({
+        where: {
+          [Op.or]: [{ login: user.login }, { email: user.email }],
+          id: {
+            [Op.ne]: user.id ? user.id : null
+          }
+        }
       })
-      if (users.find((item) => item.id !== user.id && item.login === user.login)) {
-        msg = 'Esse login já está em uso'
-      }
-      if (users.find((item) => item.id !== user.id && item.email === user.email)) {
-        msg = 'Esse email já está em uso'
+
+      if (other) {
+        if (other.email === user.email) {
+          msg = 'Esse email já está em uso'
+        }
+
+        if (other.login === user.login) {
+          msg = 'Esse login já está em uso'
+        }
       }
     } catch (error) {
-      console.log(error)
       msg = 'erro ao tentar salvar usuário'
     }
 

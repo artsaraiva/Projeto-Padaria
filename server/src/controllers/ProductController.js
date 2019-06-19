@@ -11,7 +11,7 @@ module.exports = {
       res.send(products)
     } catch (error) {
       res.status(500).send({
-        error: 'não foi possivel obter lista de usuários'
+        error: 'não foi possivel obter lista de produtos'
       })
     }
   },
