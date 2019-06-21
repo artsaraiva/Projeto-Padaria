@@ -7,11 +7,11 @@ describe('Validação de Usuário', function () {
   const user = {}
 
   beforeEach(function () {
-    user.name = 'admin',
-    user.login = 'admin',
-    user.email = 'admin@admin.admin',
+    user.name = 'admin'
+    user.login = 'admin'
+    user.email = 'admin@admin.com'
     user.password = 'adminadmin'
-  });
+  })
 
   async function validateUser (valid) {
     const error = await UserControllerPolicy.validate(user, true)
@@ -87,7 +87,7 @@ describe('Validação de Usuário', function () {
     await validateUser(false)
 
     user.email = 'teste@numero.123'
-    await validateUser(true)
+    await validateUser(false)
 
     user.email = 'teste@teste&12'
     await validateUser(false)
@@ -96,7 +96,7 @@ describe('Validação de Usuário', function () {
     await validateUser(false)
 
     user.email = 'um@dominio'
-    await validateUser(true)
+    await validateUser(false)
   })
 
   it('validação da senha', async function() {
