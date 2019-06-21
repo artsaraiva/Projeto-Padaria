@@ -1,7 +1,7 @@
 
 module.exports = {
   development: {
-    username: 'root',
+    username: 'root_user',
     password: 'root',
     database: 'bakery',
     host: '127.0.0.1',
@@ -9,7 +9,7 @@ module.exports = {
     seederStorage: 'sequelize'
   },
   test: {
-    username: process.env.DB_USERNAME || 'root',
+    username: process.env.DB_USERNAME || 'root_user',
     password: process.env.DB_PASSWORD || 'root',
     database: process.env.DB_NAME || 'bakery',
     host: process.env.DB_HOSTNAME || '127.0.0.1',

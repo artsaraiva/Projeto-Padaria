@@ -5,7 +5,7 @@
         <v-toolbar flat dense dark class="amber accent-4">
           <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
-        <form @submit="doLogin" class="pl-4 pr-4 pt-2 pb-2">
+        <form @submit.prevent="doLogin" class="pl-4 pr-4 pt-2 pb-2">
           <v-text-field prepend-icon="person" label="Email ou Login" v-model="login" />
           <v-text-field prepend-icon="lock" label="Senha" type="password" v-model="password" />
           <div class="danger-alert" v-html="error" />
@@ -36,8 +36,12 @@ export default {
           login: this.login,
           password: this.password
         })
-        this.$store.dispatch('setToken', response.data.token)
-        this.$store.dispatch('setUser', response.data.user)
+
+        await Promise.all([
+          this.$store.dispatch('setToken', response.data.token),
+          this.$store.dispatch('setUser', response.data.user)
+        ])
+
         this.$router.push(this.$route.query.redirect || '/')
       } catch (error) {
         this.error = error.response.data.error

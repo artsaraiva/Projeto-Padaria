@@ -1,6 +1,6 @@
 
-const { User } = require('../models')
-const Op = require('../models').Sequelize.Op
+const { User } = require('../db/models')
+const Op = require('../db/models').Sequelize.Op
 
 module.exports = {
   async get (req, res) {

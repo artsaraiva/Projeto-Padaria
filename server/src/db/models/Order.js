@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DOUBLE,
       allowNull: false
     },
-    notes: DataTypes.TEXT
+    notes: {
+      allowNull: false,
+      defaultValue: '',
+      type: DataTypes.TEXT
+    }
   }, {
     tableName: 'orders'
   })

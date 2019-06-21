@@ -2,7 +2,7 @@
 const assert = require('chai').assert
 
 const UserController = require('../../src/controllers/UserController')
-const { User } = require('../../src/models')
+const { User } = require('../../src/db/models')
 
 describe('UserController', function () {
   let dbUser = null

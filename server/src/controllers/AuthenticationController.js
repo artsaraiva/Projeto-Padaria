@@ -1,7 +1,7 @@
 
 const passport = require('passport')
-const { User } = require('../models')
-const Op = require('../models').Sequelize.Op
+const { User } = require('../db/models')
+const Op = require('../db/models').Sequelize.Op
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 

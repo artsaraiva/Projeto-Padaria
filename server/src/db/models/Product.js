@@ -6,7 +6,7 @@ function checkStock (product, options) {
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     name: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING,
       allowNull: false
     },
     code: {
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     type: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
       allowNull: false
     },
     quantity: {
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     minimum_quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: -1
     }
   }, {
     tableName: 'products',

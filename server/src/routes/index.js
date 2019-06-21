@@ -7,4 +7,5 @@ module.exports = function (app) {
 
   app.use('/users', require('./users'))
   app.use('/products', require('./products'))
+  app.use('/orders', require('./orders'))
 }

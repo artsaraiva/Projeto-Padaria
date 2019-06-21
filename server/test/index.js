@@ -1,4 +1,4 @@
 
 before(function () {
-  require('../src/models').sequelize.options.logging = false
+  require('../src/db/models').sequelize.options.logging = false
 })

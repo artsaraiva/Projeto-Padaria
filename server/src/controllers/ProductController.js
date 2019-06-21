@@ -1,5 +1,6 @@
 
-const { Product } = require('../models')
+const { Product } = require('../db/models')
+const Op = require('../db/models').Sequelize.Op
 const Mail = require('../mail')
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
   async post (req, res) {
     try {
       const product = await Product.create(req.body)
-      res.send(product.toJSON())
+      res.send(product)
     } catch (error) {
       res.status(500).send({
         error: 'não foi possivel adicionar produto'
@@ -42,7 +43,7 @@ module.exports = {
       }
 
       await product.update(req.body)
-      res.send(product.toJSON())
+      res.send(product)
     } catch (error) {
       res.status(500).send({
         error: 'não foi possivel atualizar produto'
@@ -87,5 +88,24 @@ module.exports = {
 
   checkStock (product) {
     return product.minimum_quantity !== -1 && product.quantity <= product.minimum_quantity
+  },
+
+  async getInvalidProducts (ids) {
+    try {
+      const query = await Product.findAll({
+        attributes: ['id'],
+        where: {
+          id: {
+            [Op.in]: ids
+          }
+        }
+      })
+
+      const valid = query.map(result => result.id)
+
+      return ids.filter(id => valid.indexOf(id) === -1)
+    } catch (error) {
+      return 'não foi possivel verificar os produtos'
+    }
   }
 }

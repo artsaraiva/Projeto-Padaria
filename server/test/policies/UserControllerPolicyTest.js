@@ -44,7 +44,7 @@ describe('Validação de Usuário', function () {
     await validateUser(false)
   })
 
-  it('validação do login', async function() {
+  it('validação do login', async function () {
     user.login = undefined
     await validateUser(false)
 
@@ -70,7 +70,7 @@ describe('Validação de Usuário', function () {
     await validateUser(false)
   })
 
-  it('validação do email', async function() {
+  it('validação do email', async function () {
     user.email = undefined
     await validateUser(false)
 
@@ -99,7 +99,7 @@ describe('Validação de Usuário', function () {
     await validateUser(false)
   })
 
-  it('validação da senha', async function() {
+  it('validação da senha', async function () {
     user.password = undefined
     await validateUser(false)
 

@@ -1,5 +1,5 @@
 
-const { Order, Product } = require('../models')
+const { Order, Product } = require('../db/models')
 
 module.exports = {
   async get (req, res) {
@@ -65,6 +65,29 @@ module.exports = {
     } catch (error) {
       res.status(500).send({
         error: 'não foi possivel atualizar venda'
+      })
+    }
+  },
+
+  async delete (req, res) {
+    try {
+      const order = await Order.findOne({
+        where: {
+          id: req.params.id
+        }
+      })
+
+      if (!order) {
+        return res.status(404).send({
+          error: 'não existe registro com esse id'
+        })
+      }
+
+      await order.destroy()
+      res.send(order)
+    } catch (error) {
+      res.status(500).send({
+        error: 'não foi possivel excluir produto'
       })
     }
   }

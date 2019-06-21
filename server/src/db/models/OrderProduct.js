@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('OrderProduct', {
     amount: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     value: {
