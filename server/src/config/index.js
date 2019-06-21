@@ -33,11 +33,11 @@ module.exports = {
     secure: true,
     port: process.env.MAIL_PORT || 465,
     auth: {
-      user: process.env.MAIL_USER || 'foomail48@gmail.com',
-      pass: process.env.MAIL_PASS || '9zuhoP3V6C'
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS
     }
   },
   notification: {
-    mail: process.env.NOTIFICATION_MAIL || 'foomail48@gmail.com'
+    mail: process.env.NOTIFICATION_MAIL
   }
 }
