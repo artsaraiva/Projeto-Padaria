@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const Order = sequelize.define('Order', {
+  const Order = sequelize.define('order', {
     value: {
       type: DataTypes.DOUBLE,
       allowNull: false

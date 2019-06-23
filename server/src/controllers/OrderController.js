@@ -1,12 +1,12 @@
 
-const { Order, Product } = require('../db/models')
+const { Order, Product, User } = require('../db/models')
 
 module.exports = {
   async get (req, res) {
     try {
       const orders = await Order.findAll({
         where: {},
-        include: [ Product ]
+        include: [ Product, User ]
       })
 
       res.send(orders)
@@ -22,7 +22,7 @@ module.exports = {
       const order = await Order.create(req.body)
 
       await Promise.all(req.body.products.map(product => {
-        return order.addProduct(product.id, { through: product.order_product })
+        return order.addProduct(product.id, { through: product.OrderProduct })
       }))
 
       const result = order.get({ plain: true })
@@ -55,7 +55,7 @@ module.exports = {
 
       await order.setTasks([])
       await Promise.all(req.body.products.map(product => {
-        return order.addProduct(product.id, { through: product.order_product })
+        return order.addProduct(product.id, { through: product.OrderProduct })
       }))
 
       const result = order.get({ plain: true })

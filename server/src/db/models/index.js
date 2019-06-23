@@ -21,7 +21,7 @@ fs
   })
   .forEach(file => {
     const model = sequelize['import'](path.join(__dirname, file))
-    db[model.name] = model
+    db[file.slice(0, -3)] = model
   })
 
 Object.keys(db).forEach(modelName => {

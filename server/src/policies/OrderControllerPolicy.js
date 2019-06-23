@@ -8,8 +8,10 @@ async function doValidate (body) {
     notes: Joi.string().allow(''),
     products: Joi.array().required().items(Joi.object({
       id: Joi.number().integer().required(),
-      amount: Joi.number().integer().required().min(1),
-      value: Joi.number().required()
+      OrderProduct: Joi.object({
+        amount: Joi.number().integer().required().min(1),
+        value: Joi.number().required()
+      }).required()
     }))
   }
 
@@ -24,6 +26,7 @@ async function doValidate (body) {
   const { error } = Joi.validate(value, schema)
 
   if (error) {
+    console.log(error)
     switch (error.details[0].context.key) {
       case 'value':
         msg = 'Campo valor está inválido'
