@@ -1,17 +1,20 @@
 <template>
-  <v-layout row wrap>
-    <v-flex class="order-table">
-      <v-btn class="amber darken-3" dark>Nova Venda</v-btn>
-      <v-data-table :headers="orderHeaders" :items="orders" hide-actions class="elevation-1 mt-2">
-        <template slot="items" slot-scope="props">
-          <tr @click="select(props.item)">
-            <td>{{ formatDate(props.item.createdAt) }}</td>
-            <td>{{ formatPrice(props.item.value) }}</td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-flex>
-    <v-flex>
+  <v-layout row fill-height>
+    <v-layout column class="order-table">
+      <v-btn class="amber darken-3" dark v-if="selectedOrder.id !== 0" @click="addOrder()">Nova Venda</v-btn>
+      <v-btn class="amber darken-3" dark v-if="selectedOrder.id === 0" @click="saveOrder()">Salvar Venda</v-btn>
+      <v-flex fill-height>
+        <v-data-table :headers="orderHeaders" :items="orders" hide-actions class="elevation-1 mt-2">
+          <template slot="items" slot-scope="props">
+            <tr :style="{ cursor: 'pointer', backgroundColor: (props.item.id === selectedOrder.id ? '#ffd59e' : '') }" @click="select(props.item)">
+              <td>{{ formatDate(props.item.createdAt) }}</td>
+              <td>{{ formatPrice(props.item.value) }}</td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-flex>
+    </v-layout>
+    <v-layout column fill-height v-if="selectedIndex !== -1">
       <v-text-field
         v-model="selectedOrder.createdAt"
         label="Data"
@@ -27,49 +30,69 @@
       <v-textarea
         v-model="selectedOrder.notes"
         label="Observações"
-        :disabled="!(selectedOrder.id)"
+        :readonly="selectedOrder.id !== 0"
       ></v-textarea>
-      <v-btn class="amber darken-3" dark :visible="!(selectedOrder.id)">Adicionar Produto</v-btn>
-      <v-data-table :headers="productHeaders" :items="selectedOrder.products" hide-actions class="elevation-1 mt-2">
+      <v-btn class="amber darken-3" dark v-if="selectedOrder.id === 0" @click="addProduct()">Adicionar Produto</v-btn>
+      <v-data-table :headers="productHeaders" :items="selectedOrder.products" item-key="" hide-actions class="elevation-1 mt-2">
         <template slot="items" slot-scope="props">
           <td>
             <v-select
-              :items="products"
-              v-model="props.item"
+              :items="getAvailableProducts(props.index)"
+              v-model="props.item.id"
               item-text="name"
+              item-value=id
               single-line
-              return-object
-              :disabled="!(selectedOrder.id)"/>
+              @change="updateProduct(props.item)"
+              :readonly="selectedOrder.id !== 0"/>
           </td>
           <td>
             <v-text-field
               v-model="props.item.orderProduct.amount"
               type="number"
-              :disabled="!(selectedOrder.id)"
+              min=0
+              @input="updateProduct(props.item)"
+              :readonly="selectedOrder.id !== 0"
             ></v-text-field>
           </td>
           <td>{{ formatPrice(props.item.orderProduct.value) }}</td>
+          <td style="padding: 0">
+            <v-btn icon class="mx-0" :disabled="selectedOrder.id !== 0" @click="deleteProduct(props.index)">
+              <v-icon color="red">delete</v-icon>
+            </v-btn>
+          </td>
         </template>
       </v-data-table>
-    </v-flex>
+      <currency-field v-bind="{ label: 'Valor Total', prefix: 'R$ ', readonly: true }" v-model="selectedOrder.value" />
+    </v-layout>
   </v-layout>
 </template>
 
 <script>
+import OrderService from '@/services/OrderService'
+import ProductService from '@/services/ProductService'
+import CurrencyField from '@/components/CurrencyField'
+const moment = require('moment')
+
 export default {
-  data() {
+  components: {
+    CurrencyField
+  },
+  data () {
     return {
       orderHeaders: [
         { text: 'Data', value: 'createdAt' },
         { text: 'Valor', value: 'value' }
       ],
       productHeaders: [
-        { text: 'Produto', value: 'product' },
-        { text: 'Quantidade', value: 'amount' },
-        { text: 'Valor', value: 'value' }
+        { text: 'Produto', value: 'product', width: '70%', sortable: false },
+        { text: 'Quantidade', value: 'amount', width: '15%', sortable: false },
+        { text: 'Valor', value: 'value', width: '15%', sortable: false },
+        { text: '', value: 'actions', width: '0', sortable: false }
       ],
       orders: [],
       products: [],
+      productMap: {},
+      selectedIndex: -1,
       selectedOrder: {
         value: 0,
         notes: '',
@@ -77,73 +100,22 @@ export default {
         products: []
       },
       defaultOrder: {
+        id: 0,
         value: 0,
         notes: '',
-        user: this.$store.user,
+        createdAt: new Date(),
+        user: this.$store.state.user,
         products: []
       }
     }
   },
   async mounted () {
-    this.orders = [
-      {
-        id: 1,
-        value: 15,
-        notes: '',
-        createdAt: '2019-06-20T22:25:16.000Z',
-        updatedAt: '2019-06-20T22:25:16.000Z',
-        userId: 1,
-        user: {
-          id: 1,
-          name: 'Administrador',
-          login: 'admin',
-          email: '',
-          password: 'admin',
-          createdAt: '2019-06-20T22:25:16.000Z',
-          updatedAt: '2019-06-20T22:25:16.000Z'
-        },
-        products: [
-          {
-            id: 1,
-            name: 'coxinha',
-            code: '002',
-            price: 3,
-            type: 'salgado',
-            quantity: 5,
-            minimum_quantity: -1,
-            createdAt: '2019-06-20T22:25:16.000Z',
-            updatedAt: '2019-06-20T22:25:16.000Z',
-            orderProduct: {
-              amount: 1,
-              value: 2,
-              createdAt: '2019-06-20T22:25:16.000Z',
-              updatedAt: '2019-06-20T22:25:16.000Z',
-              orderId: 1,
-              productId: 1
-            }
-          },
-          {
-            id: 2,
-            name: 'café',
-            code: '003',
-            price: 2,
-            type: 'bebida',
-            quantity: 20,
-            minimum_quantity: -1,
-            createdAt: '2019-06-20T22:25:16.000Z',
-            updatedAt: '2019-06-20T22:25:16.000Z',
-            orderProduct: {
-              amount: 1,
-              value: 2,
-              createdAt: '2019-06-20T22:25:16.000Z',
-              updatedAt: '2019-06-20T22:25:16.000Z',
-              orderId: 1,
-              productId: 2
-            }
-          }
-        ]
-      }
-    ]
+    this.orders = (await OrderService.index()).data
+    this.products = (await ProductService.index()).data
+
+    this.products.forEach(product => {
+      this.productMap[product.id] = product
+    })
   },
   methods: {
     formatDate (date) {
@@ -155,16 +127,73 @@ export default {
     addOrder () {
       const order = Object.assign({}, this.defaultOrder)
       this.orders.push(order)
-      select(order) 
+      this.select(order)
     },
     select (order) {
+      this.selectedIndex = this.orders.indexOf(order)
       this.selectedOrder = Object.assign({}, order)
-      selectedOrder.createdAt = formatDate(selectedOrder.createdAt)
+      this.selectedOrder.createdAt = this.formatDate(this.selectedOrder.createdAt)
+    },
+    getAvailableProducts (index) {
+      return this.products.filter(product => {
+        return !this.selectedOrder.products.find(p => {
+          return this.selectedOrder.products.indexOf(p) !== index &&
+                 p.id === product.id
+        })
+      })
+    },
+    addProduct () {
+      this.selectedOrder.products.push({
+        id: 0,
+        orderProduct: {
+          amount: 1,
+          value: 0
+        }
+      })
+    },
+    updateProduct (product) {
+      const temp = this.productMap[product.id]
+
+      if (temp) {
+        product.orderProduct.value = temp.price * product.orderProduct.amount
+        this.updateOrder()
+      }
+    },
+    deleteProduct (index) {
+      this.selectedOrder.products.splice(index, 1)
+      this.updateOrder()
+    },
+    updateOrder () {
+      let value = 0
+      this.selectedOrder.products.forEach(product => {
+        value += product.orderProduct.value
+      })
+      this.selectedOrder.value = value
+    },
+    async saveOrder () {
+      let order = this.orders[this.selectedIndex]
+      order.value = this.selectedOrder.value
+      order.notes = this.selectedOrder.notes
+      order.userId = this.selectedOrder.user.id
+      order.products = this.selectedOrder.products.filter(product => product.id)
+      order = (await OrderService.post(order)).data
+      this.orders.splice(this.selectedIndex, 1, order)
+      this.select(order)
+    },
+    randomId () {
+      var S4 = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+      }
+
+      return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
     }
   }
 }
 </script>
 
 <style scoped>
-
+.order-table {
+  max-width: 30%;
+  padding-right: 24px;
+}
 </style>

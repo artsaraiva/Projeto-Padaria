@@ -1,7 +1,7 @@
 <template>
   <v-toolbar fixed dark class="amber accent-4">
     <v-toolbar-title>
-      <router-link class="home" tag="span" :to="{ name: 'sales' }">
+      <router-link class="home" tag="span" :to="{ name: 'orders' }">
         Padaria
       </router-link>
       <v-btn flat dark :to="{ name: 'users' }">

@@ -11,6 +11,7 @@ module.exports = {
 
       res.send(orders)
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'não foi possivel obter lista de vendas'
       })
@@ -22,11 +23,12 @@ module.exports = {
       const order = await Order.create(req.body)
 
       await Promise.all(req.body.products.map(product => {
-        return order.addProduct(product.id, { through: product.OrderProduct })
+        return order.addProduct(product.id, { through: product.orderProduct })
       }))
 
       const result = order.get({ plain: true })
       result.products = await order.getProducts()
+      result.user = await order.getUser()
 
       res.send(result)
     } catch (error) {
@@ -55,7 +57,7 @@ module.exports = {
 
       await order.setTasks([])
       await Promise.all(req.body.products.map(product => {
-        return order.addProduct(product.id, { through: product.OrderProduct })
+        return order.addProduct(product.id, { through: product.orderProduct })
       }))
 
       const result = order.get({ plain: true })

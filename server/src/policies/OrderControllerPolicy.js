@@ -8,7 +8,7 @@ async function doValidate (body) {
     notes: Joi.string().allow(''),
     products: Joi.array().required().items(Joi.object({
       id: Joi.number().integer().required(),
-      OrderProduct: Joi.object({
+      orderProduct: Joi.object({
         amount: Joi.number().integer().required().min(1),
         value: Joi.number().required()
       }).required()

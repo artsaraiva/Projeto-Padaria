@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import store from '@/store'
 
 import Login from '@/components/Login'
-import Sales from '@/components/Sales'
+import Orders from '@/components/Orders'
 import Users from '@/components/Users'
 import Products from '@/components/Products'
 
@@ -22,8 +22,8 @@ const router = new Router({
     },
     {
       path: '/',
-      name: 'sales',
-      component: Sales,
+      name: 'orders',
+      component: Orders,
       meta: {
         requiresAuth: true
       }

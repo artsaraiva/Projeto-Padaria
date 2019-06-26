@@ -4,7 +4,7 @@ function checkStock (product, options) {
 }
 
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('oroduct', {
+  const Product = sequelize.define('product', {
     name: {
       type: DataTypes.STRING,
       allowNull: false

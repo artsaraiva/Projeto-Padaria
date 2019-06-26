@@ -2,7 +2,8 @@
   <v-text-field v-bind:label="this.$props.label"
                 :value="formattedValue"
                 @input="change"
-                v-money="{precision, decimal, thousands, prefix, suffix}" />
+                v-money="{precision, decimal, thousands, prefix, suffix}"
+                :readonly="readonly" />
 </template>
 
 <script>
@@ -92,6 +93,10 @@ export default {
     suffix: {
       type: String,
       default: ''
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   directives: {money: Money},
