@@ -74,6 +74,18 @@ module.exports = {
     }
   },
 
+  async updateStock (orderProduct) {
+    const product = await Product.findOne({
+      where: {
+        id: orderProduct.productId
+      }
+    })
+
+    await product.update({
+      quantity: product.quantity - orderProduct.amount
+    })
+  },
+
   notifyStock (product) {
     if (this.checkStock(product)) {
       Mail.sendHTMLMail(null, 'Notificação de Estoque', 'minimumquantity', {

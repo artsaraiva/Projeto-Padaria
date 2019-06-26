@@ -1,8 +1,4 @@
 
-function checkStock (product, options) {
-  require('../controllers/ProductController').notifyStock(product)
-}
-
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('product', {
     name: {
@@ -34,7 +30,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'products',
     hooks: {
-      afterSave: checkStock
+      afterSave: (product, options) => {
+        require('../controllers/ProductController').notifyStock(product)
+      }
     }
   })
 
