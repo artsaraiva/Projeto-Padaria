@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'products',
     hooks: {
       afterSave: (product, options) => {
-        require('../controllers/ProductController').notifyStock(product)
+        require('../../controllers/ProductController').notifyStock(product)
       }
     }
   })

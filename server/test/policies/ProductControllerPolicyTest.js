@@ -11,7 +11,7 @@ describe('Validação de Produto', function () {
     product.code = 'I-001'
     product.price = 2.50
     product.type = 'Ingrediente'
-    product.quantity = 50,
+    product.quantity = 50
     product.minimum_quantity = 10
   })
 

@@ -22,6 +22,7 @@ module.exports = {
       const product = await Product.create(req.body)
       res.send(product)
     } catch (error) {
+      console.log(error)
       res.status(500).send({
         error: 'não foi possivel adicionar produto'
       })

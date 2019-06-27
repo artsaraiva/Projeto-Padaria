@@ -12,13 +12,17 @@ describe('Validação de Produto', function () {
     order.products = [
       {
         id: 1,
-        amount: 1,
-        value: 3.50
+        orderProduct: {
+          amount: 1,
+          value: 3.50
+        }
       },
       {
         id: 2,
-        amount: 2,
-        value: 4
+        orderProduct: {
+          amount: 2,
+          value: 4
+        }
       }
     ]
   })
@@ -49,8 +53,10 @@ describe('Validação de Produto', function () {
 
     order.products = [
       {
-        amount: 1,
-        value: 3.50
+        orderProduct: {
+          amount: 1,
+          value: 3.50
+        }
       }
     ]
     await validateOrder(false)
@@ -58,8 +64,10 @@ describe('Validação de Produto', function () {
     order.products = [
       {
         id: 0,
-        amount: 1,
-        value: 3.50
+        orderProduct: {
+          amount: 1,
+          value: 3.50
+        }
       }
     ]
     await validateOrder(false)

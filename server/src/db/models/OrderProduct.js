@@ -12,8 +12,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'order_products',
     hooks: {
-      afterSave: (orderProduct, options) => {
-        return require('../controllers/ProductController').updateStock(orderProduct)
+      afterBulkCreate: (orderProducts, options) => {
+        return Promise.all(orderProducts.map(orderProduct => {
+          require('../../controllers/ProductController').updateStock(orderProduct.get({ plain: true }))
+        }))
       }
     }
   })

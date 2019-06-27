@@ -26,7 +26,6 @@ async function doValidate (body) {
   const { error } = Joi.validate(value, schema)
 
   if (error) {
-    console.log(error)
     switch (error.details[0].context.key) {
       case 'value':
         msg = 'Campo valor está inválido'
