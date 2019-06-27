@@ -1,7 +1,7 @@
 
 module.exports = {
   development: {
-    username: 'root_user',
+    username: 'root',
     password: 'root',
     database: 'bakery',
     host: '127.0.0.1',

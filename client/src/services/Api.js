@@ -4,7 +4,7 @@ import router from '@/router'
 
 export default () => {
   const axios = Axios.create({
-    baseURL: 'http://localhost:8081',
+    baseURL: '/api',
     headers: {
       Authorization: `Bearer ${store.state.token}`
     }
