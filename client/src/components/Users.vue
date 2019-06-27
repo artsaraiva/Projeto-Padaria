@@ -46,6 +46,7 @@
 
 <script>
 import UserService from '@/services/UserService'
+
 const moment = require('moment')
 
 export default {
@@ -122,8 +123,6 @@ export default {
       } catch (error) {
         if (error.response) {
           this.error = error.response.data.error
-        } else {
-          console.log(error)
         }
       }
     },

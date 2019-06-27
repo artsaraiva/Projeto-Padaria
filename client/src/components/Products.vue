@@ -54,6 +54,7 @@
 <script>
 import ProductService from '@/services/ProductService'
 import CurrencyField from '@/components/CurrencyField'
+
 const moment = require('moment')
 
 export default {
@@ -149,8 +150,6 @@ export default {
       } catch (error) {
         if (error.response) {
           this.error = error.response.data.error
-        } else {
-          console.log(error)
         }
       }
     },
@@ -158,16 +157,16 @@ export default {
       return moment(date).format('DD/MM/YYYY HH:mm:ss')
     },
     formatQuantity (product) {
-      let quantity = product.quantity
+      let { quantity } = product
 
       if (product.minimum_quantity !== -1) {
-        quantity += ' / ' + product.minimum_quantity
+        quantity += ` / ${product.minimum_quantity}`
       }
 
       return quantity
     },
     formatPrice (price) {
-      return 'R$ ' + price.toString().replace('.', ',')
+      return `R$ ${price.toString().replace('.', ',')}`
     }
   }
 }

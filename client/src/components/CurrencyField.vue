@@ -7,25 +7,25 @@
 </template>
 
 <script>
-import {Money} from 'v-money'
+import { Money } from 'v-money'
 
 function format (input, opt) {
   if (typeof input === 'number') {
     input = input.toFixed(fixed(opt.precision))
   }
 
-  var numbers = onlyNumbers(input)
-  var currency = numbersToCurrency(numbers, opt.precision)
-  var parts = toStr(currency).split('.')
-  var integer = parts[0]
-  var decimal = parts[1]
+  const numbers = onlyNumbers(input)
+  const currency = numbersToCurrency(numbers, opt.precision)
+  const parts = toStr(currency).split('.')
+  let integer = parts[0]
+  const decimal = parts[1]
   integer = addThousandSeparator(integer, opt.thousands)
   return opt.prefix + joinIntegerAndDecimal(integer, decimal, opt.decimal) + opt.suffix
 }
 
 function unformat (input, precision) {
-  var numbers = onlyNumbers(input)
-  var currency = numbersToCurrency(numbers, precision)
+  const numbers = onlyNumbers(input)
+  const currency = numbersToCurrency(numbers, precision)
   return parseFloat(currency)
 }
 
@@ -42,8 +42,8 @@ function between (min, n, max) {
 }
 
 function numbersToCurrency (numbers, precision) {
-  var exp = Math.pow(10, precision)
-  var float = parseFloat(numbers) / exp
+  const exp = Math.pow(10, precision)
+  const float = parseFloat(numbers) / exp
   return float.toFixed(fixed(precision))
 }
 
@@ -99,7 +99,7 @@ export default {
       default: false
     }
   },
-  directives: {money: Money},
+  directives: { money: Money },
   data () {
     return {
       formattedValue: ''
@@ -109,7 +109,7 @@ export default {
     value: {
       immediate: true,
       handler (newValue, oldValue) {
-        var formatted = format(newValue, this.$props)
+        const formatted = format(newValue, this.$props)
         this.formattedValue = formatted
       }
     }

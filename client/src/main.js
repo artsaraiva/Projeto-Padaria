@@ -1,11 +1,10 @@
 
 import Vue from 'vue'
-import App from './App'
-import router from './router'
-import store from './store'
-import { sync } from 'vuex-router-sync'
 import Vuetify from 'vuetify'
+import App from './App.vue'
 import 'vuetify/dist/vuetify.min.css'
+import store from './store'
+import router from './router'
 
 Vue.config.productionTip = false
 
@@ -13,10 +12,8 @@ Vue.use(Vuetify, {
   iconfont: 'md' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
 
-sync(store, router)
-
 new Vue({
-  render: h => h(App),
+  store,
   router,
-  store
+  render: h => h(App)
 }).$mount('#app')

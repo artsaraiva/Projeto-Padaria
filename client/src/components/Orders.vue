@@ -71,6 +71,7 @@
 import OrderService from '@/services/OrderService'
 import ProductService from '@/services/ProductService'
 import CurrencyField from '@/components/CurrencyField'
+
 const moment = require('moment')
 
 export default {
@@ -84,10 +85,18 @@ export default {
         { text: 'Valor', value: 'value' }
       ],
       productHeaders: [
-        { text: 'Produto', value: 'product', width: '70%', sortable: false },
-        { text: 'Quantidade', value: 'amount', width: '15%', sortable: false },
-        { text: 'Valor', value: 'value', width: '15%', sortable: false },
-        { text: '', value: 'actions', width: '0', sortable: false }
+        {
+          text: 'Produto', value: 'product', width: '70%', sortable: false
+        },
+        {
+          text: 'Quantidade', value: 'amount', width: '15%', sortable: false
+        },
+        {
+          text: 'Valor', value: 'value', width: '15%', sortable: false
+        },
+        {
+          text: '', value: 'actions', width: '0', sortable: false
+        }
       ],
       orders: [],
       products: [],
@@ -113,7 +122,7 @@ export default {
     this.orders = (await OrderService.index()).data
     this.products = (await ProductService.index()).data
 
-    this.products.forEach(product => {
+    this.products.forEach((product) => {
       this.productMap[product.id] = product
     })
   },
@@ -122,7 +131,7 @@ export default {
       return moment(date).format('DD/MM/YYYY HH:mm:ss')
     },
     formatPrice (price) {
-      return 'R$ ' + price.toString().replace('.', ',')
+      return `R$ ${price.toString().replace('.', ',')}`
     },
     addOrder () {
       const order = Object.assign({}, this.defaultOrder)
@@ -135,12 +144,8 @@ export default {
       this.selectedOrder.createdAt = this.formatDate(this.selectedOrder.createdAt)
     },
     getAvailableProducts (index) {
-      return this.products.filter(product => {
-        return !this.selectedOrder.products.find(p => {
-          return this.selectedOrder.products.indexOf(p) !== index &&
-                 p.id === product.id
-        })
-      })
+      return this.products.filter(product => !this.selectedOrder.products.find(p => this.selectedOrder.products.indexOf(p) !== index &&
+                 p.id === product.id))
     },
     addProduct () {
       this.selectedOrder.products.push({
@@ -165,7 +170,7 @@ export default {
     },
     updateOrder () {
       let value = 0
-      this.selectedOrder.products.forEach(product => {
+      this.selectedOrder.products.forEach((product) => {
         value += product.orderProduct.value
       })
       this.selectedOrder.value = value
@@ -181,11 +186,11 @@ export default {
       this.select(order)
     },
     randomId () {
-      var S4 = function () {
+      const S4 = function () {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
       }
 
-      return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
+      return (`${S4() + S4()}-${S4()}-${S4()}-${S4()}-${S4()}${S4()}${S4()}`)
     }
   }
 }

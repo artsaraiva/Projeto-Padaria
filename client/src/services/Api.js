@@ -4,13 +4,13 @@ import router from '@/router'
 
 export default () => {
   const axios = Axios.create({
-    baseURL: `http://localhost:8081`,
+    baseURL: 'http://localhost:8081',
     headers: {
       Authorization: `Bearer ${store.state.token}`
     }
   })
 
-  axios.interceptors.response.use((response) => response, (error) => {
+  axios.interceptors.response.use(response => response, (error) => {
     if (error.response.status === 401) {
       alert('Sessão expirada')
       store.dispatch('setToken', null)
