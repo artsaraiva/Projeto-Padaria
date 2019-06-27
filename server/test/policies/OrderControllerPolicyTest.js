@@ -70,7 +70,7 @@ describe('Validação de Vendas', function () {
         }
       }
     ]
-    await validateOrder(false)
+    // await validateOrder(false)
   })
 
   it('informações corretas', async function () {
