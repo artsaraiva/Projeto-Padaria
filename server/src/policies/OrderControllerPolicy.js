@@ -2,7 +2,7 @@
 const Joi = require('@hapi/joi')
 const ProductController = require('../controllers/ProductController')
 
-async function doValidate (body) {
+async function doValidate (body, skipInvalid) {
   const schema = {
     value: Joi.number().required(),
     notes: Joi.string().allow(''),
@@ -42,7 +42,7 @@ async function doValidate (body) {
     }
   }
 
-  if (!msg) {
+  if (!msg && !skipInvalid) {
     const invalid = await ProductController.getInvalidProducts(body.products.map(product => {
       return product.id
     }))
@@ -82,7 +82,7 @@ module.exports = {
     }
   },
 
-  async validate (body) {
-    return doValidate(body)
+  async validate (body, skipInvalid) {
+    return doValidate(body, skipInvalid)
   }
 }

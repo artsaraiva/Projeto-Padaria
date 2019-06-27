@@ -3,7 +3,7 @@ const assert = require('chai').assert
 
 const OrderControllerPolicy = require('../../src/policies/OrderControllerPolicy')
 
-describe('Validação de Produto', function () {
+describe('Validação de Vendas', function () {
   const order = {}
 
   beforeEach(function () {
@@ -28,7 +28,7 @@ describe('Validação de Produto', function () {
   })
 
   async function validateOrder (valid) {
-    const error = await OrderControllerPolicy.validate(order)
+    const error = await OrderControllerPolicy.validate(order, true)
 
     if (valid) {
       if (error) {
