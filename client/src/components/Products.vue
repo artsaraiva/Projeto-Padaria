@@ -102,7 +102,7 @@ export default {
   },
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Novo Produto' : 'Editar Produto'
+      return this.editedIndex === -1 ? 'Novo Produto Novo Produto' : 'Editar Produto'
     }
   },
   watch: {
